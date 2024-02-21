@@ -22,5 +22,26 @@ def main():
         for key, value in Todo.items():
             print(f" {key}: {value}") 
         view= "no"
+                
+    remove= input ("Would you like to remove a task yes or no ")
+    while (remove == "yes"):
+        rem= input("What test would you like to get rid of (enter task number) ")
+        
+        if rem in Todo:
+            del Todo[rem]
+        remove= input ("Would you like to remove a task yes or no ")
+    
+    done= input("Would you like to mark a tast as done yes or no ")
+    while (done == "yes"):
+        complete=input("What task is done (enter the number) ")
+        Todo[complete] = "Done"
+        done= input("Would you like to mark a tast as done yes or no ")
+    
+    
+    view= input("Would you like to view you tasks yes or no ")
+    while (view == 'yes'):
+        for key, value in Todo.items():
+            print(f" {key}: {value}") 
+        view= "no"
 
 main()
