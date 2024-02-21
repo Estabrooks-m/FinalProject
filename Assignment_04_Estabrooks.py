@@ -43,5 +43,21 @@ def main():
         for key, value in Todo.items():
             print(f" {key}: {value}") 
         view= "no"
-
+def file(Todo):
+    Data= Todo
+    
+    
+    
+    
 main()
+
+
+
+
+
+
+
+
+
+
+
