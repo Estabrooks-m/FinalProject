@@ -103,6 +103,5 @@ def main():
 
     #closes the pygame window	 
     py.quit() 
-    
 
 main()
