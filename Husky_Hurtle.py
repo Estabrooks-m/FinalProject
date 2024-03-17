@@ -102,6 +102,7 @@ def main():
 
 
     #closes the pygame window	 
-    py.quit() 
+    py.quit() gits
+    
 
 main()
