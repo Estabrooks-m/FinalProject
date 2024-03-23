@@ -3,7 +3,6 @@ import random
 
 
 
-
 class Husky:
     #define the image and the background with coordinates and speed
     def __init__(self):
@@ -38,18 +37,19 @@ class Husky:
 
 
     def pillars(self):
+            self.rect = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, 0, 90, self.length))
+            self.rect2 = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, self.length + 250, 90, (800 - self.length + 250)))
+            py.display.update()
         #use to create the pillars (using the random function)
-        None
 
-    def flap(self):
-        while True:
-            #use to create the movement when the user presses certain keys
-            None
+
 
     def update(self):
+        #use to update constant movement (falling + moving forward)
         self.HuskyCoord.centery += self.yspeed
-        #use to have the constant movement (falling + moving forward)
-        None
+
+
+
 class Movement(Husky):
     
     def __init__(self, HuskyInstance):
@@ -59,10 +59,12 @@ class Movement(Husky):
 
     def constant(self):
         print("Checking game loop runs")
+
         while self.going:
             #HuskyInst = Husky()
             #Collision(HuskyInst)
-        
+            """if self.HuskyInst.x % 400 ==0:
+                 self.HuskyInst.pillars()"""
 
             #  win.blit(rect, (rect.left))
             #  win.blit(rect2, (rect.left))
@@ -76,7 +78,7 @@ class Movement(Husky):
                     if event.key == py.K_RIGHT:
                         self.HuskyInst.HuskyCoord.centerx += 150
 
-                #makes the husky fall (add because the coordinates get more positive as you go down)
+            #makes the husky fall (add because the coordinates get more positive as you go down)
             self.HuskyInst.yspeed += self.HuskyInst.falling
             #adjusts the y coordinate after accounting for if the user clicked space and falling
             self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
@@ -86,7 +88,11 @@ class Movement(Husky):
             if self.HuskyInst.HuskyCoord.centerx == 700:
                 self.HuskyInst.x -= 3       
 
+
             self.HuskyInst.update()
+    
+            self.HuskyInst.pillars()
+            #self.HuskyInst.pillars()
             self.HuskyInst.win.blit(self.HuskyInst.background, (0, 0))
             #moves the husky using the new x and y coordinates
             self.HuskyInst.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
