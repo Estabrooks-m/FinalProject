@@ -76,6 +76,16 @@ class Movement(Husky):
                     if event.key == py.K_RIGHT:
                         self.HuskyInst.HuskyCoord.centerx += 150
 
+                #makes the husky fall (add because the coordinates get more positive as you go down)
+            self.HuskyInst.yspeed += self.HuskyInst.falling
+            #adjusts the y coordinate after accounting for if the user clicked space and falling
+            self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
+            #adjusts the x coordinate (constant)
+            if self.HuskyInst.HuskyCoord.centerx < 700:
+                self.HuskyInst.HuskyCoord.centerx += 1
+            if self.HuskyInst.HuskyCoord.centerx == 700:
+                self.HuskyInst.x -= 3       
+
             self.HuskyInst.update()
             self.HuskyInst.win.blit(self.HuskyInst.background, (0, 0))
             #moves the husky using the new x and y coordinates
