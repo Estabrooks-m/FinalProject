@@ -3,6 +3,7 @@ import random
 
 
 
+#Huskey class is for creating the necessary objects needed to run the game
 class Husky:
     #define the image and the background with coordinates and speed
     def __init__(self):
@@ -36,27 +37,27 @@ class Husky:
         self.x = 700
 
 
+    #use to create the pillars (using the random function)
     def pillars(self):
             self.rect = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, 0, 90, self.length))
             self.rect2 = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, self.length + 250, 90, (800 - self.length + 250)))
             py.display.update()
-        #use to create the pillars (using the random function)
+        
 
-
-
+    #use to update constant movement (falling + moving forward)
     def update(self):
-        #use to update constant movement (falling + moving forward)
         self.HuskyCoord.centery += self.yspeed
 
 
 
 class Movement(Husky):
-    
+    #initializes an instance from the Husky Class
     def __init__(self, HuskyInstance):
         self.going = True
         self.HuskyInst = HuskyInstance
         
 
+    #constant method for the stuff that is constantly running
     def constant(self):
         print("Checking game loop runs")
 
@@ -103,38 +104,36 @@ class Movement(Husky):
             #makes it so the program doesnt run at more than 60 fps (limits it so it doesnt run too fast or too slow)
             self.HuskyInst.clock.tick(60)
     
-"""    def clicked(self):
-        #print(HuskyCoord)
-        for event in py.event.get():
-            if event.type == py.QUIT:
-                self.going = False
-            elif event.type == py.KEYDOWN:
-                if event.key == py.K_SPACE:
-                  self.HuskyInst.yspeed = -self.HuskyInst.jumping
-                #a fun little cheat feature
-                if event.key == py.K_RIGHT:
-                    self.HuskyInst.HuskyCoord.centerx += 150"""
+
 
 class Collision(Husky):
     def __init__(self):
-        #adds the background
-        
-        None
+        #gets necessary variables
+        pass
 
     def collisionTest(self):
         #checks for collision
-        None
+        pass
 
     def ifCollision(self):
         #returns a game over screen
-        None
+        pass
 
+    def WinScreen(self):
+        #creates and returns a win screen
+        pass
+
+    def LoseScreen(self):
+        #creates and returns a lose screen
+        pass
+
+#use for calling necessary methods + creating instances
 def main():
 
     HuskyInstance = Husky()
     MovementInstance = Movement(HuskyInstance)
     MovementInstance.constant()
-  #  MovementInstance.clicked()
+
 
 
 
