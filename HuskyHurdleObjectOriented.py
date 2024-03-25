@@ -116,7 +116,8 @@ class Collision(Husky):
         pass
 
     def ifCollision(self):
-        #returns a game over screen
+        #calls the lose screen and maybe asks the player if they want to play again
+        #this means we'll need to check for keys clicked
         pass
 
     def WinScreen(self):
