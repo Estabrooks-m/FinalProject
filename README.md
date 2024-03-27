@@ -9,4 +9,4 @@ If the user hits the pillars at any time the game is over and the score is equal
 
 Tracking:
 The game uses a pixel based tracking system, so if the pixals of the players icon overlap/touch the pixles of the genrated 
-rectangle the game countes that as a "collison" and ends the game.
+rectangle the game countes that as a "collison" and ends the game. 
