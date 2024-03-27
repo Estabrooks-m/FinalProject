@@ -16,6 +16,7 @@ Our code uses the pygame library which is not included in the python 3 instalati
 In order to download pygame follow these steps:
 1. Open the command prompt window 
 2. Type into the bar "pip install pygame"
+3. Check if pygame has installed correclty by restarting the command window and typing "import pygame"
 
 
 
