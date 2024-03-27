@@ -10,3 +10,14 @@ If the user hits the pillars at any time the game is over and the score is equal
 Tracking:
 The game uses a pixel based tracking system, so if the pixals of the players icon overlap/touch the pixles of the genrated 
 rectangle the game countes that as a "collison" and ends the game. 
+
+Downloading Pygame:
+Our code uses the pygame library which is not included in the python 3 instalation.
+In order to download pygame follow these steps:
+1. Open the command prompt window 
+2. Type into the bar "pip install pygame"
+
+
+
+Citations:
+Pygame installation instructions: https://www.geeksforgeeks.org/how-to-install-pygame-in-windows/
