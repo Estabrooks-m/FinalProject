@@ -20,5 +20,5 @@ In order to download pygame follow these steps:
 
 
 
-Citations:
+Citations:  <br />
 Pygame installation instructions: https://www.geeksforgeeks.org/how-to-install-pygame-in-windows/
