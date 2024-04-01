@@ -19,6 +19,5 @@ In order to download pygame follow these steps:
 3. Check if pygame has installed correclty by restarting the command window and typing "import pygame"
 
 
-
 Citations:  <br />
 Pygame installation instructions: https://www.geeksforgeeks.org/how-to-install-pygame-in-windows/
