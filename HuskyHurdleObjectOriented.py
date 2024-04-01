@@ -1,7 +1,10 @@
+"""
+Created on Sun Mar 24 12:49:27 2024
+
+@author: Estabrooks
+"""
 import pygame as py
 import random
-
-
 
 #Huskey class is for creating the necessary objects needed to run the game
 class Husky:
@@ -9,8 +12,6 @@ class Husky:
     def __init__(self):
         print("Checking for initializing")
         py.init() 
-        #creates the screen with specific dimensions
-        self.win = py.display.set_mode((1400, 1000)) 
         # set caption
         py.display.set_caption("Husky Hurdle")
         #creates the "speed" that it falls
@@ -32,43 +33,68 @@ class Husky:
         #get_rect returns the coordinates of the husky (1000 is the height )
         self.HuskyCoord = self.husky.get_rect(center=(100, 1000 // 2))
         #creates a variable for the fps
-        self.clock = py.time.Clock()
-        self.length = random.randint(0, 600)
+        
         self.x = 700
-
-
-    #use to create the pillars (using the random function)
-    def pillars(self):
-            self.rect = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, 0, 90, self.length))
-            self.rect2 = py.draw.rect(self.win, [0, 255, 0], py.Rect(self.x, self.length + 250, 90, (800 - self.length + 250)))
-            py.display.update()
         
 
     #use to update constant movement (falling + moving forward)
     def update(self):
         self.HuskyCoord.centery += self.yspeed
 
+class Pillar():
+    def __init__(self, win):
+        self.length = random.randint(0, 600)
+        self.pillars = []
+        self.pillar_speed = 1
+        self.win = win
+
+       
+    def generation(self):
+        x = 1400
+        length = random.randint(0, 501)
+        self.rect =  py.Rect(x, 0, 90, length)
+        self.rect1 =  py.Rect(x, length + 250, 90, 800 - length + 250)
+        return [self.rect, self.rect1]
 
 
-class Movement(Husky):
-    #initializes an instance from the Husky Class
-    def __init__(self, HuskyInstance):
-        self.going = True
-        self.HuskyInst = HuskyInstance
+    def move(self, pillarList):
+        for i in pillarList:
+            for j in i:
+                j.x -= self.pillar_speed
+                print("called move")
+
+       
+
+    def draw(self, pillarList):
+        for i in pillarList:
+            for j in i:
+                py.draw.rect( self.win, [0, 255, 0], j)
+
+                print("called draw")
+        py.display.update()
         
 
+class Movement(Pillar, Husky):
+    #initializes an instance from the Husky Class
+    def __init__(self, HuskyInst, PillarInstance, win, clock):
+        #creates the screen with specific dimensions
+        self.win = win
+        self.going = True
+        self.HuskyInst = HuskyInst
+        self.PillarInst = PillarInstance
+        self.clock = clock
+        self.x = 8000
+        self.pillars = []
+        self.score = 2
+
+        
     #constant method for the stuff that is constantly running
     def constant(self):
         print("Checking game loop runs")
 
         while self.going:
-            #HuskyInst = Husky()
-            #Collision(HuskyInst)
-            """if self.HuskyInst.x % 400 ==0:
-                 self.HuskyInst.pillars()"""
 
-            #  win.blit(rect, (rect.left))
-            #  win.blit(rect2, (rect.left))
+
             for event in py.event.get():
                 if event.type == py.QUIT:
                     self.going = False
@@ -76,7 +102,7 @@ class Movement(Husky):
                     if event.key == py.K_SPACE:
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
                     #a fun little cheat feature
-                    if event.key == py.K_RIGHT:
+                    if event.key == py.K_RIGHT: 
                         self.HuskyInst.HuskyCoord.centerx += 150
 
             #makes the husky fall (add because the coordinates get more positive as you go down)
@@ -89,24 +115,33 @@ class Movement(Husky):
             if self.HuskyInst.HuskyCoord.centerx == 700:
                 self.HuskyInst.x -= 3       
 
-
+            if py.time.get_ticks() > self.x:
+                self.pillars.append(self.PillarInst.generation())
+                self.x += 8000
+                
+     
+            if len(self.pillars) > 4:
+                self.pillars.pop(0)
+                self.score += 1
+        
+            self.PillarInst.draw(self.pillars)
+            self.PillarInst.move(self.pillars)
+            
             self.HuskyInst.update()
-    
-            self.HuskyInst.pillars()
-            #self.HuskyInst.pillars()
-            self.HuskyInst.win.blit(self.HuskyInst.background, (0, 0))
+                
+                
+            self.win.blit(self.HuskyInst.background, (0, 0))
             #moves the husky using the new x and y coordinates
-            self.HuskyInst.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
+            self.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
+            
+            #updates the display
             py.display.update()
 
-            #displays/updates
-
             #makes it so the program doesnt run at more than 60 fps (limits it so it doesnt run too fast or too slow)
-            self.HuskyInst.clock.tick(60)
+            self.clock.tick(60)
     
 
-
-class Collision(Husky):
+class Collision(Husky, Pillar):
     def __init__(self):
         #gets necessary variables
         pass
@@ -128,14 +163,15 @@ class Collision(Husky):
         #creates and returns a lose screen
         pass
 
+
 #use for calling necessary methods + creating instances
 def main():
-
+    win = py.display.set_mode((1400, 1000)) 
+    clock = py.time.Clock()
     HuskyInstance = Husky()
-    MovementInstance = Movement(HuskyInstance)
+    PillarInstance = Pillar(win)
+    MovementInstance = Movement(HuskyInstance, PillarInstance, win, clock)
     MovementInstance.constant()
-
-
-
+    
 
 main()
