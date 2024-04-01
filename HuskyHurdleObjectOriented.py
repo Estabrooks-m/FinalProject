@@ -1,10 +1,7 @@
-"""
-Created on Sun Mar 24 12:49:27 2024
-
-@author: Estabrooks
-"""
 import pygame as py
 import random
+
+
 
 #Huskey class is for creating the necessary objects needed to run the game
 class Husky:
@@ -35,10 +32,7 @@ class Husky:
         #creates a variable for the fps
         
         self.x = 700
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/remotes/origin/main
         
 
 
@@ -51,7 +45,6 @@ class Pillar():
     def __init__(self, win):
         self.length = random.randint(0, 600)
         self.pillars = []
-<<<<<<< HEAD
         self.pillar_speed = 3
         self.win = win
 
@@ -64,25 +57,11 @@ class Pillar():
         return [self.rect, self.rect1]
 
 
-=======
-        self.pillar_speed = 1
-        self.win = win
-
-       
-    def generation(self):
-        x = 1400
-        length = random.randint(0, 501)
-        self.rect =  py.Rect(x, 0, 90, length)
-        self.rect1 =  py.Rect(x, length + 250, 90, 800 - length + 250)
-        return [self.rect, self.rect1]
-
-
->>>>>>> refs/remotes/origin/main
     def move(self, pillarList):
         for i in pillarList:
             for j in i:
                 j.x -= self.pillar_speed
-                print("called move")
+
 
        
 
@@ -91,13 +70,12 @@ class Pillar():
             for j in i:
                 py.draw.rect( self.win, [0, 255, 0], j)
 
-                print("called draw")
-<<<<<<< HEAD
+   
 
         
 
 
-class Movement(Pillar, Husky):
+class Movement():
     #initializes an instance from the Husky Class
     def __init__(self, HuskyInst, PillarInstance, win, clock):
         #creates the screen with specific dimensions
@@ -110,25 +88,8 @@ class Movement(Pillar, Husky):
         self.pillars = []
         self.score = 2
 
-=======
-        py.display.update()
->>>>>>> refs/remotes/origin/main
         
 
-class Movement(Pillar, Husky):
-    #initializes an instance from the Husky Class
-    def __init__(self, HuskyInst, PillarInstance, win, clock):
-        #creates the screen with specific dimensions
-        self.win = win
-        self.going = True
-        self.HuskyInst = HuskyInst
-        self.PillarInst = PillarInstance
-        self.clock = clock
-        self.x = 8000
-        self.pillars = []
-        self.score = 2
-
-        
     #constant method for the stuff that is constantly running
     def constant(self):
         print("Checking game loop runs")
@@ -146,19 +107,9 @@ class Movement(Pillar, Husky):
                     if event.key == py.K_RIGHT: 
                         self.HuskyInst.HuskyCoord.centerx += 150
 
-            #makes the husky fall (add because the coordinates get more positive as you go down)
-            self.HuskyInst.yspeed += self.HuskyInst.falling
-            #adjusts the y coordinate after accounting for if the user clicked space and falling
-            self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
-            #adjusts the x coordinate (constant)
-            if self.HuskyInst.HuskyCoord.centerx < 700:
-                self.HuskyInst.HuskyCoord.centerx += 1
-            if self.HuskyInst.HuskyCoord.centerx == 700:
-                self.HuskyInst.x -= 3       
 
             if py.time.get_ticks() > self.x:
                 self.pillars.append(self.PillarInst.generation())
-<<<<<<< HEAD
                 
                 if self.x < 20000:
                     self.x += 5000
@@ -168,21 +119,28 @@ class Movement(Pillar, Husky):
                     self.x += 3000
                 else:
                     self.x += 2500
-=======
-                self.x += 8000
->>>>>>> refs/remotes/origin/main
                 
      
             if len(self.pillars) > 4:
                 self.pillars.pop(0)
                 self.score += 1
         
-<<<<<<< HEAD
 
-=======
-            self.PillarInst.draw(self.pillars)
-            self.PillarInst.move(self.pillars)
->>>>>>> refs/remotes/origin/main
+            if Collision(self.HuskyInst.HuskyCoord, self.pillars).collisionTest() == True:
+
+                #makes the husky fall (add because the coordinates get more positive as you go down)
+                self.HuskyInst.yspeed += self.HuskyInst.falling
+                #adjusts the y coordinate after accounting for if the user clicked space and falling
+                self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
+                #adjusts the x coordinate (constant)
+                if self.HuskyInst.HuskyCoord.centerx < 700:
+                    self.HuskyInst.HuskyCoord.centerx += 1
+                if self.HuskyInst.HuskyCoord.centerx == 700:
+                    self.HuskyInst.x -= 3       
+
+            else: 
+                #adjust the speeds
+
             
             self.HuskyInst.update()
                 
@@ -191,11 +149,8 @@ class Movement(Pillar, Husky):
             #moves the husky using the new x and y coordinates
             self.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
             
-<<<<<<< HEAD
             self.PillarInst.draw(self.pillars)
             self.PillarInst.move(self.pillars)
-=======
->>>>>>> refs/remotes/origin/main
             #updates the display
             py.display.update()
 
@@ -203,27 +158,36 @@ class Movement(Pillar, Husky):
             self.clock.tick(60)
     
 
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/remotes/origin/main
-class Collision(Husky, Pillar):
-    def __init__(self):
+class Collision():
+    def __init__(self, HuskyCoord, PillarList):
         #gets necessary variables
-        pass
+        self.HuskyCoord = HuskyCoord
+        self.PillarList = PillarList
+        
 
     def collisionTest(self):
+        NoCollision = True
+        for i in self.PillarList:
+            for j in i:
+                #if self.HuskyCoord.x == j.x and self.HuskyCoord == j.y:
+                if self.HuskyCoord.colliderect(j):
+                    self.ifCollision()
+                    NoCollision = False
+        return NoCollision
+        #if husky x position == pillar x position and husky y position == pillar y position:
+            #losescreen (need score)
         #checks for collision
-        pass
+        
 
     def ifCollision(self):
         #calls the lose screen and maybe asks the player if they want to play again
         #this means we'll need to check for keys clicked
-        pass
+        self.HuskyCoord.centery += 10
+        #self.HuskyCoord.centerx -= 3
+        print("Collision!")
+        
 
-    def WinScreen(self):
-        #creates and returns a win screen
-        pass
 
     def LoseScreen(self):
         #creates and returns a lose screen
@@ -239,5 +203,8 @@ def main():
     MovementInstance = Movement(HuskyInstance, PillarInstance, win, clock)
     MovementInstance.constant()
     
+
+
+
 
 main()
