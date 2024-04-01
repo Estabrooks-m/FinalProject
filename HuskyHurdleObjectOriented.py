@@ -9,7 +9,7 @@ class Husky:
     def __init__(self):
         print("Checking for initializing")
         py.init() 
-        # set caption
+        #set caption
         py.display.set_caption("Husky Hurdle")
         #creates the "speed" that it falls
         self.falling = 0.15
@@ -96,6 +96,8 @@ class Movement():
 
         while self.going:
 
+ 
+
 
             for event in py.event.get():
                 if event.type == py.QUIT:
@@ -126,20 +128,19 @@ class Movement():
                 self.score += 1
         
 
-            if Collision(self.HuskyInst.HuskyCoord, self.pillars).collisionTest() == True:
+            
 
-                #makes the husky fall (add because the coordinates get more positive as you go down)
-                self.HuskyInst.yspeed += self.HuskyInst.falling
-                #adjusts the y coordinate after accounting for if the user clicked space and falling
-                self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
-                #adjusts the x coordinate (constant)
-                if self.HuskyInst.HuskyCoord.centerx < 700:
-                    self.HuskyInst.HuskyCoord.centerx += 1
-                if self.HuskyInst.HuskyCoord.centerx == 700:
-                    self.HuskyInst.x -= 3       
+            #makes the husky fall (add because the coordinates get more positive as you go down)
+            self.HuskyInst.yspeed += self.HuskyInst.falling
+            #adjusts the y coordinate after accounting for if the user clicked space and falling
+            self.HuskyInst.HuskyCoord.centery += self.HuskyInst.yspeed
+            #adjusts the x coordinate (constant)
+            if self.HuskyInst.HuskyCoord.centerx < 700:
+                self.HuskyInst.HuskyCoord.centerx += 1
+            if self.HuskyInst.HuskyCoord.centerx == 700:
+                self.HuskyInst.x -= 3       
 
-            else: 
-                #adjust the speeds
+
 
             
             self.HuskyInst.update()
@@ -147,6 +148,8 @@ class Movement():
                 
             self.win.blit(self.HuskyInst.background, (0, 0))
             #moves the husky using the new x and y coordinates
+
+
             self.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
             
             self.PillarInst.draw(self.pillars)
@@ -155,40 +158,62 @@ class Movement():
             py.display.update()
 
             #makes it so the program doesnt run at more than 60 fps (limits it so it doesnt run too fast or too slow)
+
+            if Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).collisionTest():
+                Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).ifCollision()
+                print("checking")
+                self.HuskyInst.HuskyCoord.center = (100, 1000 // 2)
+                self.pillars = []
+                self.score = 0
+                self.x = 5000
+
+
             self.clock.tick(60)
+
     
 
 
 class Collision():
-    def __init__(self, HuskyCoord, PillarList):
+    def __init__(self, HuskyCoord, PillarList, win):
         #gets necessary variables
         self.HuskyCoord = HuskyCoord
         self.PillarList = PillarList
+        self.win = win
         
 
     def collisionTest(self):
-        NoCollision = True
         for i in self.PillarList:
             for j in i:
                 #if self.HuskyCoord.x == j.x and self.HuskyCoord == j.y:
                 if self.HuskyCoord.colliderect(j):
-                    self.ifCollision()
-                    NoCollision = False
-        return NoCollision
+                    return True
+
         #if husky x position == pillar x position and husky y position == pillar y position:
             #losescreen (need score)
         #checks for collision
         
 
+        """    def ifCollision(self):
+                font = py.font.Font('freesansbold.ttf', 32)
+                text = font.render(' Collision! Would you like to play again? ', True, (0, 255, 0))
+                self.win.blit(text, dest=(500,500))
+        """
+
+                        
     def ifCollision(self):
-        #calls the lose screen and maybe asks the player if they want to play again
-        #this means we'll need to check for keys clicked
-        self.HuskyCoord.centery += 10
-        #self.HuskyCoord.centerx -= 3
-        print("Collision!")
-        
+        font = py.font.Font(None, 100)
+        text = font.render(' Collision! Would you like to play again? ', True, (0, 255, 0))
+        self.win.blit(text, dest=(20,500))
+        py.display.update()
+        event = py.event.wait()
+        if event.type == py.QUIT:
+                self.going = False
+        elif event.type == py.KEYDOWN:
+                    pass
 
 
+      
+    
     def LoseScreen(self):
         #creates and returns a lose screen
         pass
