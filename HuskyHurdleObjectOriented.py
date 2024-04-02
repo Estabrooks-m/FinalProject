@@ -53,7 +53,7 @@ class Pillar():
         x = 1400
         length = random.randint(0, 501)
         self.rect =  py.Rect(x, 0, 90, length)
-        self.rect1 =  py.Rect(x, length + 250, 90, 800 - length + 250)
+        self.rect1 =  py.Rect(x, length + 300, 90, 800 - length + 300)
         return [self.rect, self.rect1]
 
 
@@ -86,22 +86,37 @@ class Movement():
         self.clock = clock
         self.x = 5000
         self.pillars = []
-        self.score = 2
+        self.score = 0
+        self.time = 0
 
-        
-
+    def reset(self):
+            self.HuskyInst.HuskyCoord.center = (100, 1000 // 2)
+            self.pillars = []
+            self.score = 0
+            self.x = 5000
+            self.time = py.time.get_ticks()
+            self.going = True
     #constant method for the stuff that is constantly running
     def constant(self):
         print("Checking game loop runs")
 
         while self.going:
+            if Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).collisionTest():
+                if Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).ifCollision():
+                #Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).ifCollision()
+                    print("checking")
+                    self.going = False
+                    self.pillars = []
+                    self.reset()
+                    
+                
 
  
 
 
             for event in py.event.get():
                 if event.type == py.QUIT:
-                    self.going = False
+                    py.quit()
                 elif event.type == py.KEYDOWN:
                     if event.key == py.K_SPACE:
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
@@ -110,7 +125,7 @@ class Movement():
                         self.HuskyInst.HuskyCoord.centerx += 150
 
 
-            if py.time.get_ticks() > self.x:
+            if py.time.get_ticks() - self.time > self.x:
                 self.pillars.append(self.PillarInst.generation())
                 
                 if self.x < 20000:
@@ -159,14 +174,10 @@ class Movement():
 
             #makes it so the program doesnt run at more than 60 fps (limits it so it doesnt run too fast or too slow)
 
-            if Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).collisionTest():
-                Collision(self.HuskyInst.HuskyCoord, self.pillars, self.win).ifCollision()
-                print("checking")
-                self.HuskyInst.HuskyCoord.center = (100, 1000 // 2)
-                self.pillars = []
-                self.score = 0
-                self.x = 5000
 
+
+
+                #TRY TO GET THE HUSKY TO BOUNCE?
 
             self.clock.tick(60)
 
@@ -181,38 +192,37 @@ class Collision():
         self.win = win
         
 
+    #checks for collision
     def collisionTest(self):
+        
         for i in self.PillarList:
             for j in i:
                 #if self.HuskyCoord.x == j.x and self.HuskyCoord == j.y:
                 if self.HuskyCoord.colliderect(j):
                     return True
-
+      
         #if husky x position == pillar x position and husky y position == pillar y position:
             #losescreen (need score)
-        #checks for collision
         
-
-        """    def ifCollision(self):
-                font = py.font.Font('freesansbold.ttf', 32)
-                text = font.render(' Collision! Would you like to play again? ', True, (0, 255, 0))
-                self.win.blit(text, dest=(500,500))
-        """
+    
 
                         
     def ifCollision(self):
         font = py.font.Font(None, 100)
-        text = font.render(' Collision! Would you like to play again? ', True, (0, 255, 0))
+        text = font.render(' Collision! Would you like to play again? (CLICK SPACE)', True, (205, 0, 216))
         self.win.blit(text, dest=(20,500))
         py.display.update()
-        event = py.event.wait()
-        if event.type == py.QUIT:
-                self.going = False
-        elif event.type == py.KEYDOWN:
-                    pass
 
 
-      
+        #the while loop ensure that its only quit or space being picked (it wont respond to the other keys)
+        while True:
+            event = py.event.wait()
+            if event.type == py.QUIT:
+                py.exit()
+            elif event.type == py.KEYDOWN:
+                if event.key == py.K_SPACE:
+                   return True
+
     
     def LoseScreen(self):
         #creates and returns a lose screen
