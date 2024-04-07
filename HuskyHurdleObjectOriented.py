@@ -70,6 +70,7 @@ class Movement():
         self.pillarTime = 12000
         self.pillars = []
         self.score = 0
+        #important for the reset method
         self.time = 0
         self.CollisionInst = Collision(self.win)
 
@@ -107,7 +108,7 @@ class Movement():
                     self.HuskyInst.yspeed += 0.2
                 elif self.pillarTime < 40000 and self.pillarTime > 20000:
                     #speeds up the generation of the pillars
-                    self.pillarTime += 4000
+                    self.pillarTime += 3500
                 elif self.pillarTime < 50000 and self.pillarTime > 40000:
                     #speeds up the generation of the pillars
                     self.pillarTime += 3000
@@ -174,8 +175,8 @@ class Collision():
     #checks for collision
     def collisionTest(self, HuskyCoord, PillarList):
         for i in PillarList:
-            #if the x value of the pillar is 665 add to the score
-            if i[0].x == 659:
+            #if the x value of the pillar is 584 add to the score
+            if i[0].x == 584:
                 self.PlayerScore += 1
                 
             score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
