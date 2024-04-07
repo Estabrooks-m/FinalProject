@@ -1,5 +1,6 @@
 import pygame as py
 import random
+import sys
 
 
 #Huskey class is for creating the necessary objects needed to run the game
@@ -90,13 +91,23 @@ class Movement():
             for event in py.event.get():
                 
                 if event.type == py.KEYDOWN:
-                    if event.type == py.K_w:
-                        py.quit()
+                    if event.type == py.K_q:
+                        py.display.quit()
+                        #py.quit()
+                        sys.exit()
                     if event.key == py.K_SPACE:
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
-                    #a fun little cheat feature
-                    if event.key == py.K_RIGHT: 
-                        self.HuskyInst.HuskyCoord.centerx += 150
+
+                        #working on a way to pause and then end the game (This would mean getting rid of the if q is clicked statement)
+                        """   if event.type == py.K_p:
+                        py.event.wait()
+                        if event.key == py.K_p:
+                            continue
+                        if py.event.wait() == py.K_q:
+                            self.CollisionInst.ifCollision() == True
+                            #if they want to play again, call reset method
+                            self.reset()"""
+
 
 
             if py.time.get_ticks() - self.time > self.pillarTime:
@@ -147,6 +158,11 @@ class Movement():
                 if self.CollisionInst.ifCollision():
                     #if they want to play again, call reset method
                     self.reset()
+
+            #resets the husky if it falls off the screen
+            """if self.HuskyInst.HuskyCoord.y == 1500:
+                if self.CollisionInst.ifCollision():
+                    self.reset()"""
 
             #draws the husky image
             self.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
