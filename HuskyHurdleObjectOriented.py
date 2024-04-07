@@ -67,7 +67,7 @@ class Movement():
         self.HuskyInst = HuskyInst
         self.PillarInst = PillarInstance
         self.clock = clock
-        self.pillarTime = 5000
+        self.pillarTime = 12000
         self.pillars = []
         self.score = 0
         self.time = 0
@@ -77,24 +77,19 @@ class Movement():
             self.HuskyInst.HuskyCoord.center = (100, 1000 // 2)
             self.pillars = []
             self.score = 0
-            self.pillarTime = 5000
+            self.pillarTime = 10000
             self.time = py.time.get_ticks()
             self.going = True
 
     #constant method for the stuff that is constantly running
     def constant(self):
         while self.going:
-            #checks if there is a collision
-            if self.CollisionInst.collisionTest(self.HuskyInst.HuskyCoord, self.pillars):
-                #if collision, returns lose screen + asks user if they want to play again
-                if self.CollisionInst.ifCollision():
-                    #if they want to play again, call reset method
-                    self.reset()
+            
 
             for event in py.event.get():
                 
                 if event.type == py.KEYDOWN:
-                    if event.type == py.K_q:
+                    if event.type == py.K_w:
                         py.quit()
                     if event.key == py.K_SPACE:
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
@@ -108,14 +103,14 @@ class Movement():
                 
                 if self.pillarTime < 20000:
                     #speeds up the generation of the pillars
-                    self.pillarTime += 5000
+                    self.pillarTime += 4000
                     self.HuskyInst.yspeed += 0.2
                 elif self.pillarTime < 40000 and self.pillarTime > 20000:
                     #speeds up the generation of the pillars
-                    self.pillarTime += 6000
+                    self.pillarTime += 4000
                 elif self.pillarTime < 50000 and self.pillarTime > 40000:
                     #speeds up the generation of the pillars
-                    self.pillarTime += 6000
+                    self.pillarTime += 3000
                 else:
                     #speeds up the generation of the pillars
                     self.pillarTime += 2500
@@ -144,6 +139,14 @@ class Movement():
 
             #draws the background image
             self.win.blit(self.HuskyInst.background, (0, 0))
+
+            #checks if there is a collision
+            if self.CollisionInst.collisionTest(self.HuskyInst.HuskyCoord, self.pillars):
+                #if collision, returns lose screen + asks user if they want to play again
+                if self.CollisionInst.ifCollision():
+                    #if they want to play again, call reset method
+                    self.reset()
+
             #draws the husky image
             self.win.blit(self.HuskyInst.husky, self.HuskyInst.HuskyCoord)
             #calls the draw method from the pillar class
@@ -166,12 +169,17 @@ class Collision():
         self.loseScreen = py.transform.smoothscale(self.loseScreen, self.win.get_size())
         
         self.PlayerScore = 0
+        self.font = py.font.Font(None, 75)
 
     #checks for collision
     def collisionTest(self, HuskyCoord, PillarList):
         for i in PillarList:
-            if i[0].x == 671:
+            #if the x value of the pillar is 665 add to the score
+            if i[0].x == 659:
                 self.PlayerScore += 1
+                
+            score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
+            self.win.blit(score, dest=(50, 150))
             for j in i:
 
                 #print(HuskyCoord.x)
@@ -185,11 +193,10 @@ class Collision():
     #method for when there is a collision 
     def ifCollision(self):
         self.LoseScreen()
-        font = py.font.Font(None, 75)
-        text = font.render(' Collision! Would you like to play again?', True, (0, 112, 200))
-        moretext = font.render('(CLICK R to play, Q to quit)', True, (0, 112, 200))
+        text = self.font.render(' Collision! Would you like to play again?', True, (0, 112, 200))
+        moretext = self.font.render('(CLICK R to play, Q to quit)', True, (0, 112, 200))
         #using an fstring to display the score
-        score = font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
+        score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
         self.win.blit(text, dest=(230,360))
         self.win.blit(moretext, dest=(540,420))
         self.win.blit(score, dest=(545,480))
