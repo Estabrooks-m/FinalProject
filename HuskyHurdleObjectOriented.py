@@ -24,14 +24,19 @@ class Husky:
         self.background = py.image.load("background.png")
         #edits the size of the background image
 
-        #self.background = py.transform.scale(self.background, (1600, 1000)) 
+        #outputs the background on the screen with the size of the screensize
         self.background = py.transform.smoothscale(self.background, self.win.get_size())
+       
+
+        print(self.win.get_size())
         #loads the husky image
         self.husky = py.image.load("husky.png")
         #edits the size of the husky image
         self.husky = py.transform.scale(self.husky, (150, 125)) 
+        #sets the height to the second element in the string that self.win.get_size() contains
+        height = self.win.get_size()[1]
         #get_rect returns the coordinates of the husky (1000 is the height)
-        self.HuskyCoord = self.husky.get_rect(center=(100, 1000 // 2))
+        self.HuskyCoord = self.husky.get_rect(center=(100, height  // 2))
         
 
 class Pillar():
@@ -239,6 +244,10 @@ class Collision():
 def main():
 
     win = py.display.set_mode(flags=py.FULLSCREEN)
+    print(py.FULLSCREEN)
+    
+
+
     clock = py.time.Clock()
     HuskyInstance = Husky(win)
     PillarInstance = Pillar(win)
