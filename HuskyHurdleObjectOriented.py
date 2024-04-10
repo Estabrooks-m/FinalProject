@@ -26,9 +26,7 @@ class Husky:
 
         #outputs the background on the screen with the size of the screensize
         self.background = py.transform.smoothscale(self.background, self.win.get_size())
-       
 
-        print(self.win.get_size())
         #loads the husky image
         self.husky = py.image.load("husky.png")
         #edits the size of the husky image
@@ -66,7 +64,7 @@ class Pillar():
                 j.x -= self.pillar_speed
 
     #draws the pilllars by looping through the list
-    #Note: it has to be a nested for loop because we wanted to keep the pillars together as a list in the pillar list
+    #Note: it has to be a nested for loop because we wanted to keep the pillars together as a list in the pillar clist
     def draw(self, pillarList):
         for i in pillarList:
             for j in i:
@@ -88,9 +86,10 @@ class Movement():
         #important for the reset method
         self.time = 0
         self.CollisionInst = Collision(self.win)
+        self.screenSize = self.win.get_size()
 
     def reset(self):
-            self.HuskyInst.HuskyCoord.center = (100, 1000 // 2)
+            self.HuskyInst.HuskyCoord.center = (100, self.screenSize[1] // 2)
             self.pillars = []
             self.score = 0
             self.pillarTime = 10000
@@ -206,19 +205,17 @@ class Collision():
     def collisionTest(self, HuskyCoord, PillarList):
         for i in PillarList:
             #if the x value of the pillar is 584 add to the score
-            if i[0].x == 584:
+            if i[0].x == 583:
                 self.PlayerScore += 1
-                
+            elif i[0].x == 584:
+                self.PlayerScore += 1
+            elif i[0].x == 585:
+                self.PlayerScore += 1 
+
             score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
             self.win.blit(score, dest=(50, 150))
             for j in i:
-
-                #print(HuskyCoord.x)
-                #if HuskyCoord.x == j.x:
-                #if j.x in range(HuskyCoord.x-1, HuskyCoord.x+1):
-                
                 if j.colliderect(HuskyCoord):
-                    
                     return True
         
     #method for when there is a collision 
@@ -253,7 +250,7 @@ class Collision():
 def main():
 
     win = py.display.set_mode(flags=py.FULLSCREEN)
-    print(py.FULLSCREEN)
+    
     
 
 
