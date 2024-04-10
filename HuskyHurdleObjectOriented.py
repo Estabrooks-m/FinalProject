@@ -41,23 +41,32 @@ class Husky:
 
 class Pillar():
     def __init__(self, win):
-        self.length = random.randint(0, 600)
+        #initializes an empty list for the pillars
         self.pillars = []
+        #sets the pilar speed to 3
         self.pillar_speed = 3
+        #initializes win
         self.win = win
 
     def generation(self):
-        x = 1400
+        #sets the xcoordinate that the pillar will be generated at to the width of the screen
+        x = self.win.get_size()[0]
+        #generates a random number from 0 to 600
         length = random.randint(0, 501)
+        #the two lines below create a pair of rectangles with the same x coordinate
         self.rect =  py.Rect(x, 0, 90, length)
         self.rect1 =  py.Rect(x, length + 300, 90, 800 - length + 300)
+        #returns the rectangles as a list
         return [self.rect, self.rect1]
 
+    #loops through the list of pillars and moves them
     def move(self, pillarList):
         for i in pillarList:
             for j in i:
                 j.x -= self.pillar_speed
 
+    #draws the pilllars by looping through the list
+    #Note: it has to be a nested for loop because we wanted to keep the pillars together as a list in the pillar list
     def draw(self, pillarList):
         for i in pillarList:
             for j in i:
