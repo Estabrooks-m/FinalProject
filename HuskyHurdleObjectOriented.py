@@ -26,7 +26,9 @@ class Husky:
 
         #outputs the background on the screen with the size of the screensize
         self.background = py.transform.smoothscale(self.background, self.win.get_size())
+       
 
+        
         #loads the husky image
         self.husky = py.image.load("husky.png")
         #edits the size of the husky image
@@ -41,8 +43,6 @@ class Pillar():
     def __init__(self, win):
         #initializes an empty list for the pillars
         self.pillars = []
-        #sets the pilar speed to 3
-        self.pillar_speed = 3
         #initializes win
         self.win = win
 
@@ -54,14 +54,30 @@ class Pillar():
         #the two lines below create a pair of rectangles with the same x coordinate
         self.rect =  py.Rect(x, 0, 90, length)
         self.rect1 =  py.Rect(x, length + 300, 90, 800 - length + 300)
+
+
         #returns the rectangles as a list
         return [self.rect, self.rect1]
+     
 
     #loops through the list of pillars and moves them
-    def move(self, pillarList):
+    def move(self, pillarList, time):
+        self.pillar_speed = time/4500
+
+        """
+        elif time > 8000 and time < 1200:
+            self.pillar_speed = 5
+        elif time > 12000 and time < 1600:
+            self.pillar_speed = 6
+        elif time > 1600:
+            self.pillar_speed = 7"""
+        
+
+        
         for i in pillarList:
             for j in i:
                 j.x -= self.pillar_speed
+       
 
     #draws the pilllars by looping through the list
     #Note: it has to be a nested for loop because we wanted to keep the pillars together as a list in the pillar clist
@@ -125,7 +141,10 @@ class Movement():
 
             if py.time.get_ticks() - self.time > self.pillarTime:
                 self.pillars.append(self.PillarInst.generation())
-                
+                self.pillarTime += 4000
+
+
+            """delete   
                 if self.pillarTime < 20000:
                     #speeds up the generation of the pillars
                     self.pillarTime += 4000
@@ -139,7 +158,7 @@ class Movement():
                 else:
                     #speeds up the generation of the pillars
                     self.pillarTime += 2500
-                    #speeds up the falling speed
+                    #speeds up the falling speed"""
                     
                 
             if len(self.pillars) > 4:
@@ -182,7 +201,7 @@ class Movement():
             #calls the draw method from the pillar class
             self.PillarInst.draw(self.pillars)
             #calls the move method from the pillar class
-            self.PillarInst.move(self.pillars)
+            self.PillarInst.move(self.pillars, self.pillarTime )
             #updates the display
             py.display.update()
             #makes it so the program doesnt run at more than 60 fps (limits it so it doesnt run too fast or too slow)
