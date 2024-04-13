@@ -62,7 +62,8 @@ class Pillar():
 
     #loops through the list of pillars and moves them
     def move(self, pillarList, time):
-        self.pillar_speed = time/4500
+        print(time)
+        self.pillar_speed = time/5000
 
         """
         elif time > 8000 and time < 1200:
