@@ -62,7 +62,6 @@ class Pillar():
 
     #loops through the list of pillars and moves them
     def move(self, pillarList, time):
-        print(time)
         self.pillar_speed = time/5000
 
         """
@@ -121,22 +120,33 @@ class Movement():
             for event in py.event.get():
                 
                 if event.type == py.KEYDOWN:
-                    if event.type == py.K_q:
+                    if event.key == py.K_q:
                         py.display.quit()
+                        print("q pressed")
                         #py.quit()
                         sys.exit()
                     if event.key == py.K_SPACE:
+                        print("space pressed")
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
 
                         #working on a way to pause and then end the game (This would mean getting rid of the if q is clicked statement)
-                        """   if event.type == py.K_p:
+                    if event.key == py.K_p:
+                        print("P pressed")
                         py.event.wait()
-                        if event.key == py.K_p:
-                            continue
-                        if py.event.wait() == py.K_q:
+                        waiting = py.event.wait()
+                        if waiting == py.K_p:
+                            self.going = True
+                        elif waiting == py.K_q:
                             self.CollisionInst.ifCollision() == True
                             #if they want to play again, call reset method
-                            self.reset()"""
+                            self.reset()
+                        elif waiting == py.K_r:
+                                self.CollisionInst.ifCollision() == True
+                                #if they want to play again, call reset method
+                                self.reset()
+                        elif waiting == py.K_q:
+                                self.going = False
+
 
 
 
@@ -271,8 +281,6 @@ def main():
 
     win = py.display.set_mode(flags=py.FULLSCREEN)
     
-    
-
 
     clock = py.time.Clock()
     HuskyInstance = Husky(win)
