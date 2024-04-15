@@ -126,9 +126,10 @@ class Movement():
                       while waiting:
                         print("wait")
                         startingTime = py.time.get_ticks()
-                        
+                        pausedText = self.font.render('PAUSED', True, (0, 0, 160))
                         pausedScreen = self.font.render('(CLICK R to replay, Q to quit, p to unpause)', True, (0, 0, 160))
-                        self.win.blit(pausedScreen, dest=(450,420))
+                        self.win.blit(pausedScreen, dest=(400,420))
+                        self.win.blit(pausedText, dest=(640,390))
                         py.display.update()
                         print(f"starting pause = {self.pausedTime}")
                         print(f"starting time = {startingTime}")
@@ -236,7 +237,7 @@ class Collision():
 
             score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 0, 160))
             self.win.blit(score, dest=(50, 50))
-            pause = self.font.render(f"Press R to pause", True, (0, 0, 160))
+            pause = self.font.render(f"Press P to pause", True, (0, 0, 160))
             self.win.blit(pause, dest=(50, 80))
             quit = self.font.render(f"Press Q to quit", True, (0, 0, 160))
             self.win.blit(quit, dest=(50, 110))
@@ -277,8 +278,7 @@ class Collision():
 def main():
     
     win = py.display.set_mode(flags=py.FULLSCREEN)
-    
-    print(py.font.get_fonts)
+
     clock = py.time.Clock()
     HuskyInstance = Husky(win)
     PillarInstance = Pillar(win)
