@@ -127,7 +127,7 @@ class Movement():
                         print("wait")
                         startingTime = py.time.get_ticks()
                         pausedText = self.font.render('PAUSED', True, (0, 0, 160))
-                        pausedScreen = self.font.render('(CLICK R to replay, Q to quit, p to unpause)', True, (0, 0, 160))
+                        pausedScreen = self.font.render('(CLICK R to replay, Q to quit, P to unpause)', True, (0, 0, 160))
                         self.win.blit(pausedScreen, dest=(400,420))
                         self.win.blit(pausedText, dest=(640,390))
                         py.display.update()
@@ -252,14 +252,14 @@ class Collision():
         moretext = self.font.render('(CLICK R to play, Q to quit)', True, (0, 112, 200))
         #using an fstring to display the score
         score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
-        self.win.blit(text, dest=(230,360))
-        self.win.blit(moretext, dest=(540,420))
-        self.win.blit(score, dest=(545,480))
+        self.win.blit(text, dest=(400,360))
+        self.win.blit(moretext, dest=(500,420))
+        self.win.blit(score, dest=(610,480))
         py.display.update()
 
         #the while loop ensure that its only quit or space being picked (it wont respond to the other keys)
         while True:
-            #waits for an event from the user (like clicking a key)
+            #waits for an event from the user (lqqqike clicking a key)
          for event in py.event.get():
             if event.type == py.KEYDOWN:
                 if event.key == py.K_q:
