@@ -63,17 +63,7 @@ class Pillar():
     #loops through the list of pillars and moves them
     def move(self, pillarList, time):
         self.pillar_speed = time/5000
-
-        """
-        elif time > 8000 and time < 1200:
-            self.pillar_speed = 5
-        elif time > 12000 and time < 1600:
-            self.pillar_speed = 6
-        elif time > 1600:
-            self.pillar_speed = 7"""
-        
-
-        
+     
         for i in pillarList:
             for j in i:
                 j.x -= self.pillar_speed
@@ -122,29 +112,34 @@ class Movement():
                 if event.type == py.KEYDOWN:
                     if event.key == py.K_q:
                         py.display.quit()
-                        print("q pressed")
-                        #py.quit()
                         sys.exit()
                     if event.key == py.K_SPACE:
-                        print("space pressed")
                         self.HuskyInst.yspeed = -self.HuskyInst.jumping
-
-                        #working on a way to pause and then end the game (This would mean getting rid of the if q is clicked statement)
                     if event.key == py.K_p:
-                        print("P pressed")
-                        py.event.wait()
-                        waiting = py.event.wait()
-                        if waiting == py.K_p:
-                            self.going = True
-                        elif waiting == py.K_q:
-                            self.CollisionInst.ifCollision() == True
-                            #if they want to play again, call reset method
-                            self.reset()
-                        elif waiting == py.K_r:
+                      #py.event.wait()
+                      waiting = True
+
+                      while waiting:
+                       typed = py.event.wait() 
+
+                       if typed.type == py.KEYDOWN:
+                        if typed.key == py.K_p:
+                            print("second p pressed")
+                            waiting = False
+
+                        elif typed.key == py.K_q:
+                            print("q pressed")
+                            py.display.quit()
+                            sys.exit()
+
+                        elif typed.key == py.K_r:
+                                print("r pressed")
+                                waiting = False
                                 self.CollisionInst.ifCollision() == True
                                 #if they want to play again, call reset method
                                 self.reset()
-                        elif waiting == py.K_q:
+                        elif typed.key == py.K_q:
+                                waiting = False
                                 self.going = False
 
 
@@ -153,23 +148,6 @@ class Movement():
             if py.time.get_ticks() - self.time > self.pillarTime:
                 self.pillars.append(self.PillarInst.generation())
                 self.pillarTime += 4000
-
-
-            """delete   
-                if self.pillarTime < 20000:
-                    #speeds up the generation of the pillars
-                    self.pillarTime += 4000
-                    self.HuskyInst.yspeed += 0.2
-                elif self.pillarTime < 40000 and self.pillarTime > 20000:
-                    #speeds up the generation of the pillars
-                    self.pillarTime += 3500
-                elif self.pillarTime < 50000 and self.pillarTime > 40000:
-                    #speeds up the generation of the pillars
-                    self.pillarTime += 3000
-                else:
-                    #speeds up the generation of the pillars
-                    self.pillarTime += 2500
-                    #speeds up the falling speed"""
                     
                 
             if len(self.pillars) > 4:
@@ -235,15 +213,14 @@ class Collision():
     def collisionTest(self, HuskyCoord, PillarList):
         for i in PillarList:
             #if the x value of the pillar is 584 add to the score
-            if i[0].x == 583:
+            if i[0].x in range(581, 587):
                 self.PlayerScore += 1
-            elif i[0].x == 584:
-                self.PlayerScore += 1
-            elif i[0].x == 585:
-                self.PlayerScore += 1 
+ 
 
             score = self.font.render(f'Score: {self.PlayerScore}', True, (0, 112, 200))
             self.win.blit(score, dest=(50, 150))
+            pause = self.font.render(f"Press p to pause", True, (0, 112, 200))
+            self.win.blit(pause, dest=(50, 200))
             for j in i:
                 if j.colliderect(HuskyCoord):
                     return True
@@ -264,9 +241,10 @@ class Collision():
         while True:
             #waits for an event from the user (like clicking a key)
          for event in py.event.get():
-            if event.type == py.K_q:
-                py.quit()
-            elif event.type == py.KEYDOWN:
+            if event.type == py.KEYDOWN:
+                if event.key == py.K_q:
+                    py.quit()
+                    sys.exit()
                 if event.key == py.K_r:
                    self.PlayerScore = 0
                    return True
