@@ -134,16 +134,13 @@ class Movement():
                         #if p is pressed, game unpauses
                         if typed.type == py.KEYDOWN:
                             if typed.key == py.K_p:
-                                print("second p pressed")
                                 waiting = False
                             #if q is pressed, game quits
                             elif typed.key == py.K_q:
-                                print("q pressed")
                                 py.display.quit()
                                 sys.exit()
                             #if r is pressed, game goes to collision screen
                             elif typed.key == py.K_r:
-                                    print("r pressed")
                                     waiting = False
                                     self.CollisionInst.ifCollision() == True
                                     #if they want to play again, call reset method
