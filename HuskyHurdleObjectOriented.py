@@ -1,3 +1,9 @@
+#Julia Faubus, Maggie Estabrooks, Sidra Ansari
+#EECE2140
+#Dr. Nafa
+#April 15, 2024
+#Github: https://github.com/Estabrooks-m/FinalProject.git
+
 import pygame as py
 import random
 import sys
